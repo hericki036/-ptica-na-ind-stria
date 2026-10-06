@@ -1,0 +1,2 @@
+# Bloqueia acesso direto ao script SQL pelo navegador
+Require all denied

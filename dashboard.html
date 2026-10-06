@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="robots" content="noindex">
+  <title>Painel · Portaria</title>
+
+  <!-- Tema salvo aplicado antes da renderização (sem "flash") -->
+  <script>
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('portaria-tema'); } catch (e) {}
+      if (t !== 'light' && t !== 'dark') t = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="bg-decor" aria-hidden="true"></div>
+
+  <!-- Tela de carregamento: o painel só aparece depois de validar a sessão -->
+  <div class="boot" id="boot" role="status" aria-label="Carregando">
+    <div class="boot-inner">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 4h3a2 2 0 0 1 2 2v14"/><path d="M2 20h3M13 20h9"/><path d="M10 12v.01"/><path d="M13 4.56v16.88a.5.5 0 0 1-.68.47l-6-2.4A1 1 0 0 1 5.7 18.6V5.94a1 1 0 0 1 .62-.93l6-2.4a.5.5 0 0 1 .68.47Z"/></svg></span>
+      <div class="boot-bar"></div>
+      <div id="boot-erro" class="alert alert-danger" style="max-width:420px" hidden></div>
+    </div>
+  </div>
+
+  <div class="app" id="app" hidden>
+
+    <!-- ============ Menu lateral ============ -->
+    <aside class="sidebar" id="sidebar" aria-label="Menu lateral">
+      <a class="brand" href="#/dashboard">
+        <span class="brand-mark" data-icon="door"></span>
+        <span class="brand-name">Portaria<span class="brand-sub">Gestão de visitas</span></span>
+      </a>
+
+      <nav class="sidebar-nav" aria-label="Menu principal">
+        <p class="nav-section">Geral</p>
+        <a class="nav-link" href="#/dashboard" data-rota="dashboard"><span data-icon="dashboard"></span>Dashboard</a>
+
+        <p class="nav-section" data-equipe>Visitas</p>
+        <a class="nav-link" href="#/visitas/nova" data-rota="visitas/nova" data-equipe><span data-icon="userPlus"></span>Registrar Visita<span class="nav-badge" id="badge-ativas" hidden></span></a>
+        <a class="nav-link" href="#/visitas" data-rota="visitas" data-equipe><span data-icon="history"></span>Histórico de Visitas</a>
+
+        <p class="nav-section">Agenda</p>
+        <a class="nav-link" href="#/agendar" data-rota="agendar"><span data-icon="calendarPlus"></span>Agendar Horário</a>
+        <a class="nav-link" href="#/agendamentos" data-rota="agendamentos"><span data-icon="calendarCheck"></span>Meus Agendamentos</a>
+
+        <p class="nav-section">Conta</p>
+        <a class="nav-link" href="#/admin" data-rota="admin" data-admin><span data-icon="shield"></span>Administração</a>
+        <a class="nav-link" href="#/configuracoes" data-rota="configuracoes"><span data-icon="settings"></span>Configurações</a>
+        <button class="nav-link nav-logout" type="button" data-logout><span data-icon="logout"></span>Logout</button>
+      </nav>
+
+      <div class="sidebar-user" id="sidebar-user"></div>
+    </aside>
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+    <!-- ============ Área principal ============ -->
+    <div class="main">
+      <header class="topbar">
+        <button class="btn btn-ghost btn-icon menu-btn" type="button" id="menu-btn" aria-label="Abrir menu" aria-controls="sidebar" aria-expanded="false"><span data-icon="menu"></span></button>
+        <div class="topbar-title">
+          <h1 id="titulo-pagina">Dashboard</h1>
+          <p id="subtitulo-pagina"></p>
+        </div>
+        <div class="topbar-actions">
+          <span id="slot-tema"></span>
+          <div class="user-menu">
+            <button class="user-btn" type="button" id="user-btn" aria-haspopup="menu" aria-expanded="false"></button>
+            <div class="dropdown" id="user-dropdown" role="menu" hidden></div>
+          </div>
+        </div>
+      </header>
+
+      <main class="content" id="conteudo" tabindex="-1" aria-live="polite"></main>
+    </div>
+  </div>
+
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+
+  <script src="js/utils.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+# Arquivos internos da API não são acessados diretamente
+<FilesMatch "^(config|conexao|helpers)\.php$">
+    Require all denied
+</FilesMatch>
