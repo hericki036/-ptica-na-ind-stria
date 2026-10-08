@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<!--
+  index.html — Landing page institucional da HydroSmart
+  "Sua água. Sua rotina. Seu cuidado."
+-->
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HydroSmart — Garrafa inteligente que te ajuda a beber água</title>
+  <meta name="description" content="HydroSmart: garrafa inteligente de 600 ml com sensor de consumo, lembretes de hidratação, conexão com app e bateria recarregável. Sua água. Sua rotina. Seu cuidado.">
+  <meta name="theme-color" content="#0B2A6F">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <a class="pular-link" href="#conteudo">Pular para o conteúdo</a>
+
+  <!-- Aviso exibido só quando a página é aberta direto do disco (file://) -->
+  <div class="aviso-servidor" role="alert">
+    <p>
+      <strong>Abra o projeto por um servidor local.</strong>
+      Os módulos JavaScript não funcionam em <code>file://</code>. No terminal, dentro da pasta do projeto, rode
+      <code>npx serve .</code> ou <code>python -m http.server 8000</code> e acesse <code>http://localhost:8000</code>.
+    </p>
+  </div>
+
+  <!-- ============================== TOPO ============================== -->
+  <header class="topo" id="topo">
+    <div class="container topo__interno">
+      <a href="#inicio" class="marca" aria-label="HydroSmart, voltar ao início">
+        <img src="assets/favicon.svg" alt="" width="32" height="32">
+        <span>HydroSmart</span>
+      </a>
+
+      <button class="topo__menu-botao" type="button" aria-expanded="false" aria-controls="menu-principal" aria-label="Abrir menu">
+        <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-menu"></use></svg>
+      </button>
+
+      <nav class="menu" id="menu-principal" aria-label="Navegação principal">
+        <ul class="menu__lista">
+          <li><a href="#problema">Problema</a></li>
+          <li><a href="#como-funciona">Como funciona</a></li>
+          <li><a href="#recursos">Recursos</a></li>
+          <li><a href="#historia">História</a></li>
+          <li><a href="#ficha-tecnica">Ficha técnica</a></li>
+          <li><a href="#publico">Para quem é</a></li>
+        </ul>
+        <div class="menu__acoes" data-sessao="anonimo">
+          <a href="#cadastro" class="botao botao--fantasma botao--pequeno" data-aba="entrar">Entrar</a>
+          <a href="#cadastro" class="botao botao--primario botao--pequeno" data-aba="cadastro">Criar conta</a>
+        </div>
+        <div class="menu__acoes" data-sessao="logado" hidden>
+          <a href="dashboard.html" class="botao botao--primario botao--pequeno">
+            <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-grafico"></use></svg>
+            Meu painel
+          </a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <!-- ============================== HERO ============================== -->
+    <section class="hero" id="inicio" aria-labelledby="hero-titulo">
+      <div class="container hero__grade">
+        <div class="hero__texto">
+          <p class="selo">
+            <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-gota"></use></svg>
+            Tecnologia que hidrata
+          </p>
+          <h1 id="hero-titulo" class="hero__titulo">HydroSmart</h1>
+          <p class="hero__slogan">Sua água. Sua rotina. <span class="texto-destaque">Seu cuidado.</span></p>
+          <p class="hero__descricao">
+            Garrafas inteligentes que te ajudam a beber água regularmente e viver melhor.
+            O sensor registra cada gole, os lembretes chegam na hora certa e o app mostra o seu progresso.
+          </p>
+          <div class="hero__acoes">
+            <a href="#cadastro" class="botao botao--primario botao--grande" data-aba="cadastro">
+              Comprar agora
+              <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-seta"></use></svg>
+            </a>
+            <a href="#cadastro" class="botao botao--contorno botao--grande" data-aba="cadastro">Criar conta</a>
+          </div>
+          <ul class="hero__destaques">
+            <li><svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-gota"></use></svg> 600 ml</li>
+            <li><svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-sensor"></use></svg> Sensor de consumo</li>
+            <li><svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-bluetooth"></use></svg> Bluetooth + app</li>
+          </ul>
+        </div>
+
+        <div class="hero__visual">
+          <div class="hero__ondas" aria-hidden="true"><span></span><span></span><span></span></div>
+          <img class="hero__garrafa" src="assets/garrafa-hydrosmart.svg" width="220" height="560"
+               alt="Garrafa inteligente HydroSmart de 600 ml, com degradê do azul-marinho ao ciano, alça na tampa e faixa de LEDs do sensor">
+
+          <!-- Prévia do app: números ilustrativos -->
+          <div class="hero__app" role="img" aria-label="Prévia do aplicativo: 1,8 litro de 2,5 litros consumidos hoje, 72% da meta">
+            <p class="hero__app-rotulo" aria-hidden="true">Hoje</p>
+            <p class="hero__app-valor" aria-hidden="true"><span data-contador="1800">1,8</span> L</p>
+            <p class="hero__app-meta" aria-hidden="true">de 2,5 L · 72% da meta</p>
+            <div class="hero__app-barra" aria-hidden="true"><span style="--progresso: 72%"></span></div>
+          </div>
+
+          <div class="hero__chip" aria-hidden="true">
+            <svg class="icone" focusable="false"><use href="assets/icones.svg#i-sino"></use></svg>
+            Próximo lembrete · 15:30
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== O PROBLEMA ============================== -->
+    <section class="secao secao--clara" id="problema" aria-labelledby="problema-titulo">
+      <div class="container problema">
+        <div class="problema__texto" data-revelar>
+          <p class="secao__rotulo">O problema</p>
+          <h2 id="problema-titulo" class="secao__titulo">Você lembra de beber água?</h2>
+          <p class="problema__destaque">Na correria do dia a dia, beber água acaba ficando para depois.</p>
+          <p class="secao__intro">
+            Entre aulas, reuniões, treinos e telas, a garrafa fica esquecida na mochila — e só lembramos dela
+            quando a sede aperta.
+          </p>
+          <blockquote class="citacao">
+            <p>Lucas percebeu que ele e seus amigos esqueciam de se hidratar durante o dia.</p>
+            <footer>Foi assim que nasceu a ideia da HydroSmart.</footer>
+          </blockquote>
+        </div>
+
+        <ul class="problema__lista" role="list">
+          <li class="cartao-problema" data-revelar>
+            <span class="cartao-problema__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-relogio"></use></svg></span>
+            <div>
+              <h3>Rotina corrida</h3>
+              <p>Compromissos em sequência empurram a água para "daqui a pouco" — que vira o fim do dia.</p>
+            </div>
+          </li>
+          <li class="cartao-problema" data-revelar>
+            <span class="cartao-problema__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-alvo"></use></svg></span>
+            <div>
+              <h3>Sem referência</h3>
+              <p>Sem medir, é difícil saber se você bebeu meio litro ou dois litros até agora.</p>
+            </div>
+          </li>
+          <li class="cartao-problema" data-revelar>
+            <span class="cartao-problema__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-sino"></use></svg></span>
+            <div>
+              <h3>Alarmes genéricos</h3>
+              <p>Lembretes comuns no celular são fáceis de ignorar e não sabem se você já bebeu.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================== COMO FUNCIONA ============================== -->
+    <section class="secao" id="como-funciona" aria-labelledby="como-titulo">
+      <div class="container">
+        <header class="secao__cabecalho" data-revelar>
+          <p class="secao__rotulo">A solução</p>
+          <h2 id="como-titulo" class="secao__titulo">Tecnologia que <span class="texto-destaque">acompanha sua rotina</span></h2>
+          <p class="secao__intro">Uma ideia simples para um problema comum. Em quatro passos, a HydroSmart transforma beber água em hábito.</p>
+        </header>
+
+        <ol class="passos" role="list">
+          <li class="passo" data-revelar>
+            <span class="passo__numero" aria-hidden="true">1</span>
+            <span class="passo__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-encher"></use></svg></span>
+            <h3 class="passo__titulo"><span class="visualmente-oculto">Passo 1: </span>Encha a garrafa</h3>
+            <p>Encha sua HydroSmart de 600 ml em casa, na escola, no trabalho ou na academia.</p>
+          </li>
+          <li class="passo" data-revelar>
+            <span class="passo__numero" aria-hidden="true">2</span>
+            <span class="passo__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-grafico"></use></svg></span>
+            <h3 class="passo__titulo"><span class="visualmente-oculto">Passo 2: </span>A HydroSmart monitora o consumo</h3>
+            <p>O sensor de consumo detecta quando você bebe e registra o volume de cada gole.</p>
+          </li>
+          <li class="passo" data-revelar>
+            <span class="passo__numero" aria-hidden="true">3</span>
+            <span class="passo__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-sino"></use></svg></span>
+            <h3 class="passo__titulo"><span class="visualmente-oculto">Passo 3: </span>O sistema envia lembretes</h3>
+            <p>Nos horários e dias que você escolher, a garrafa e o app avisam que é hora de beber água.</p>
+          </li>
+          <li class="passo" data-revelar>
+            <span class="passo__numero" aria-hidden="true">4</span>
+            <span class="passo__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-celular"></use></svg></span>
+            <h3 class="passo__titulo"><span class="visualmente-oculto">Passo 4: </span>Você acompanha o progresso pelo app</h3>
+            <p>Via Bluetooth, os dados chegam ao aplicativo: consumo do dia, meta, histórico e conquistas.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============================== RECURSOS ============================== -->
+    <section class="secao secao--clara" id="recursos" aria-labelledby="recursos-titulo">
+      <div class="container">
+        <header class="secao__cabecalho" data-revelar>
+          <p class="secao__rotulo">Recursos</p>
+          <h2 id="recursos-titulo" class="secao__titulo">Conheça a <span class="texto-destaque">HydroSmart</span></h2>
+          <p class="secao__intro">Tudo o que você precisa para beber água na medida certa, sem precisar lembrar sozinho.</p>
+        </header>
+
+        <ul class="recursos" role="list">
+          <li data-revelar>
+            <article class="recurso">
+              <span class="recurso__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-sino"></use></svg></span>
+              <h3>Lembretes para beber água</h3>
+              <p>Avisos nos horários e dias que você definir. Dá para editar, pausar ou excluir quando quiser.</p>
+            </article>
+          </li>
+          <li data-revelar>
+            <article class="recurso">
+              <span class="recurso__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-grafico"></use></svg></span>
+              <h3>Indicador de consumo</h3>
+              <p>O sensor mede quanto você bebeu e mostra o progresso em relação à sua meta diária.</p>
+            </article>
+          </li>
+          <li data-revelar>
+            <article class="recurso">
+              <span class="recurso__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-bluetooth"></use></svg></span>
+              <h3>Conexão com aplicativo</h3>
+              <p>Sincroniza por Bluetooth com o app mobile para você ver histórico, metas e conquistas.</p>
+            </article>
+          </li>
+          <li data-revelar>
+            <article class="recurso">
+              <span class="recurso__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-bateria"></use></svg></span>
+              <h3>Bateria recarregável</h3>
+              <p>Nada de pilhas descartáveis: é só recarregar e continuar usando.</p>
+            </article>
+          </li>
+          <li data-revelar>
+            <article class="recurso">
+              <span class="recurso__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-brilho"></use></svg></span>
+              <h3>Design moderno</h3>
+              <p>Degradê do azul-marinho ao ciano e alça prática na tampa, para levar para qualquer lugar.</p>
+            </article>
+          </li>
+          <li data-revelar>
+            <article class="recurso">
+              <span class="recurso__icone"><svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-reutilizar"></use></svg></span>
+              <h3>Reutilizável</h3>
+              <p>Feita para o uso diário, ajuda a deixar de lado as garrafas plásticas descartáveis.</p>
+            </article>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================== HISTÓRIA ============================== -->
+    <section class="secao" id="historia" aria-labelledby="historia-titulo">
+      <div class="container">
+        <header class="secao__cabecalho" data-revelar>
+          <p class="secao__rotulo">Do protótipo à empresa</p>
+          <h2 id="historia-titulo" class="secao__titulo">Da ideia <span class="texto-destaque">ao negócio</span></h2>
+          <p class="secao__intro">Nem tudo foi fácil. A ideia era boa — agora era preciso transformá-la em um produto.</p>
+        </header>
+
+        <ol class="linha-tempo" role="list">
+          <li class="linha-tempo__item" data-revelar>
+            <span class="linha-tempo__marcador" aria-hidden="true">01</span>
+            <div class="linha-tempo__conteudo">
+              <h3><svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-lampada"></use></svg> Ideia</h3>
+              <p>Lucas percebeu que ele e os amigos esqueciam de beber água e imaginou uma garrafa que lembrasse por eles.</p>
+            </div>
+          </li>
+          <li class="linha-tempo__item" data-revelar>
+            <span class="linha-tempo__marcador" aria-hidden="true">02</span>
+            <div class="linha-tempo__conteudo">
+              <h3><svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-ferramenta"></use></svg> Protótipo</h3>
+              <p>O protótipo inicial — uma garrafa de 600 ml com marcações para lembrar de hidratar — colocou a ideia em teste.</p>
+            </div>
+          </li>
+          <li class="linha-tempo__item" data-revelar>
+            <span class="linha-tempo__marcador" aria-hidden="true">03</span>
+            <div class="linha-tempo__conteudo">
+              <h3><svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-caixa"></use></svg> Produto</h3>
+              <p>Lucas desenvolveu o produto, melhorou o design e apresentou a primeira versão para estudantes e trabalhadores, que validaram a proposta.</p>
+            </div>
+          </li>
+          <li class="linha-tempo__item" data-revelar>
+            <span class="linha-tempo__marcador" aria-hidden="true">04</span>
+            <div class="linha-tempo__conteudo">
+              <h3><svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-predio"></use></svg> Empresa</h3>
+              <p>Desafios superados, inovação entregue: nasce a HydroSmart, tecnologia que hidrata.</p>
+            </div>
+          </li>
+        </ol>
+
+        <blockquote class="citacao citacao--grande" data-revelar>
+          <p>Uma ideia pode se transformar quando encontra um problema real para resolver.</p>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- ============================== FICHA TÉCNICA ============================== -->
+    <section class="secao secao--clara" id="ficha-tecnica" aria-labelledby="ficha-titulo">
+      <div class="container ficha">
+        <div class="ficha__visual" data-revelar>
+          <img src="assets/garrafa-hydrosmart.svg" alt="" width="220" height="560" loading="lazy">
+          <p class="ficha__capacidade" aria-hidden="true"><strong>600</strong> ml</p>
+        </div>
+
+        <div class="ficha__dados" data-revelar>
+          <p class="secao__rotulo">Ficha técnica</p>
+          <h2 id="ficha-titulo" class="secao__titulo">HydroSmart: mais que uma garrafa</h2>
+
+          <div class="tabela-rolagem">
+            <table class="tabela-ficha">
+              <caption class="visualmente-oculto">Especificações técnicas da garrafa HydroSmart</caption>
+              <tbody>
+                <tr>
+                  <th scope="row">Capacidade</th>
+                  <td>600 ml</td>
+                </tr>
+                <tr>
+                  <th scope="row">Sensor</th>
+                  <td>Sensor de consumo que detecta quando você bebe e registra o volume</td>
+                </tr>
+                <tr>
+                  <th scope="row">Lembretes</th>
+                  <td>Alertas de hidratação configuráveis por horário e dia da semana</td>
+                </tr>
+                <tr>
+                  <th scope="row">Conectividade</th>
+                  <td>Bluetooth, com aplicativo mobile</td>
+                </tr>
+                <tr>
+                  <th scope="row">Aplicativo</th>
+                  <td>Consumo do dia, meta diária, histórico dos últimos 7 dias e conquistas</td>
+                </tr>
+                <tr>
+                  <th scope="row">Bateria</th>
+                  <td>Recarregável</td>
+                </tr>
+                <tr>
+                  <th scope="row">Uso</th>
+                  <td>Reutilizável, com design moderno e alça na tampa</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== PÚBLICO-ALVO ============================== -->
+    <section class="secao" id="publico" aria-labelledby="publico-titulo">
+      <div class="container">
+        <header class="secao__cabecalho" data-revelar>
+          <p class="secao__rotulo">Para quem é</p>
+          <h2 id="publico-titulo" class="secao__titulo">Feita para quem vive <span class="texto-destaque">na correria</span></h2>
+          <p class="secao__intro">
+            Estudantes, trabalhadores, atletas e todo mundo que quer melhorar a rotina de hidratação.
+            Conheça três personas — elas também são as contas de demonstração do painel.
+          </p>
+        </header>
+
+        <ul class="personas" role="list">
+          <li data-revelar>
+            <article class="persona">
+              <header class="persona__topo">
+                <span class="persona__avatar"><svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-estudante"></use></svg></span>
+                <div>
+                  <p class="persona__perfil">Estudante</p>
+                  <h3>Ana, 19 anos</h3>
+                </div>
+              </header>
+              <p>Passa o dia entre aulas, biblioteca e ônibus. A garrafa costuma ficar esquecida na mochila.</p>
+              <p class="persona__ajuda"><strong>Como a HydroSmart ajuda:</strong> lembretes nos intervalos das aulas.</p>
+              <p class="persona__meta">Meta: 2 L por dia</p>
+            </article>
+          </li>
+          <li data-revelar>
+            <article class="persona">
+              <header class="persona__topo">
+                <span class="persona__avatar"><svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-maleta"></use></svg></span>
+                <div>
+                  <p class="persona__perfil">Trabalhador</p>
+                  <h3>Bruno, 34 anos</h3>
+                </div>
+              </header>
+              <p>Reuniões seguidas e muitas horas no computador. Quando percebe, já é fim do expediente.</p>
+              <p class="persona__ajuda"><strong>Como a HydroSmart ajuda:</strong> avisos entre compromissos e histórico da semana.</p>
+              <p class="persona__meta">Meta: 2,5 L por dia</p>
+            </article>
+          </li>
+          <li data-revelar>
+            <article class="persona">
+              <header class="persona__topo">
+                <span class="persona__avatar"><svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-atividade"></use></svg></span>
+                <div>
+                  <p class="persona__perfil">Atleta</p>
+                  <h3>Carla, 27 anos</h3>
+                </div>
+              </header>
+              <p>Treina de manhã cedo e no fim da tarde, e precisa acompanhar quanto bebe ao longo do dia.</p>
+              <p class="persona__ajuda"><strong>Como a HydroSmart ajuda:</strong> registra cada gole e mostra quanto falta para a meta.</p>
+              <p class="persona__meta">Meta: 3,5 L por dia</p>
+            </article>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================== CADASTRO / LOGIN ============================== -->
+    <section class="secao secao--destaque" id="cadastro" aria-labelledby="cadastro-titulo">
+      <div class="container cadastro">
+        <div class="cadastro__texto" data-revelar>
+          <p class="secao__rotulo secao__rotulo--claro">Pré-venda</p>
+          <h2 id="cadastro-titulo" class="secao__titulo">Garanta sua HydroSmart</h2>
+          <p class="secao__intro">
+            Crie sua conta para entrar na lista da pré-venda e já experimentar o painel do aplicativo com a sua meta.
+          </p>
+          <ul class="lista-check" role="list">
+            <li><svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-check"></use></svg> Meta diária personalizada (1.000 a 5.000 ml)</li>
+            <li><svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-check"></use></svg> Lembretes prontos para editar</li>
+            <li><svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-check"></use></svg> Simulação da garrafa, histórico e conquistas</li>
+          </ul>
+          <div class="cartao-demo">
+            <p><strong>Só quer explorar?</strong> Use a conta de demonstração da Ana:</p>
+            <p><code>ana@hydrosmart.com.br</code> · senha <code>hydro123</code></p>
+          </div>
+        </div>
+
+        <div class="autenticacao" data-revelar>
+          <div class="abas" role="tablist" aria-label="Acesso à conta">
+            <button class="abas__aba" type="button" role="tab" id="aba-cadastro" aria-controls="painel-cadastro" aria-selected="true">Criar conta</button>
+            <button class="abas__aba" type="button" role="tab" id="aba-entrar" aria-controls="painel-entrar" aria-selected="false" tabindex="-1">Entrar</button>
+          </div>
+
+          <!-- Formulário de cadastro -->
+          <div class="abas__painel" role="tabpanel" id="painel-cadastro" aria-labelledby="aba-cadastro">
+            <form id="form-cadastro" class="form" novalidate>
+              <p class="form__resumo-erro" role="alert" hidden></p>
+
+              <div class="campo">
+                <label for="cad-nome">Nome completo</label>
+                <input id="cad-nome" name="nome" type="text" autocomplete="name" maxlength="100" required
+                       aria-describedby="cad-nome-erro">
+                <p class="campo__erro" id="cad-nome-erro" hidden></p>
+              </div>
+
+              <div class="campo">
+                <label for="cad-email">E-mail</label>
+                <input id="cad-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="160" required
+                       aria-describedby="cad-email-erro">
+                <p class="campo__erro" id="cad-email-erro" hidden></p>
+              </div>
+
+              <div class="campo">
+                <label for="cad-senha">Senha</label>
+                <div class="campo__senha">
+                  <input id="cad-senha" name="senha" type="password" autocomplete="new-password" minlength="8" required
+                         aria-describedby="cad-senha-dica cad-senha-erro">
+                  <button class="campo__mostrar" type="button" aria-controls="cad-senha" aria-pressed="false" aria-label="Mostrar senha">
+                    <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-olho"></use></svg>
+                  </button>
+                </div>
+                <p class="campo__dica" id="cad-senha-dica">Mínimo de 8 caracteres, com letras e números.</p>
+                <p class="campo__erro" id="cad-senha-erro" hidden></p>
+              </div>
+
+              <div class="form__linha">
+                <div class="campo">
+                  <label for="cad-peso">Peso <span class="campo__opcional">(opcional)</span></label>
+                  <div class="campo__unidade">
+                    <input id="cad-peso" name="peso_kg" type="number" inputmode="decimal" min="20" max="300" step="0.1"
+                           aria-describedby="cad-peso-erro">
+                    <span aria-hidden="true">kg</span>
+                  </div>
+                  <p class="campo__erro" id="cad-peso-erro" hidden></p>
+                </div>
+
+                <div class="campo">
+                  <label for="cad-meta">Meta diária de água</label>
+                  <div class="campo__unidade">
+                    <input id="cad-meta" name="meta_diaria_ml" type="number" inputmode="numeric" min="1000" max="5000" step="50" value="2000" required
+                           aria-describedby="cad-meta-dica cad-meta-erro">
+                    <span aria-hidden="true">ml</span>
+                  </div>
+                  <p class="campo__dica" id="cad-meta-dica">Entre 1.000 e 5.000 ml.</p>
+                  <p class="campo__erro" id="cad-meta-erro" hidden></p>
+                </div>
+              </div>
+
+              <button class="botao botao--texto" type="button" id="botao-sugerir-meta">
+                <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-brilho"></use></svg>
+                Sugerir meta pelo meu peso
+              </button>
+              <p class="campo__dica" id="sugestao-meta" aria-live="polite"></p>
+
+              <button class="botao botao--primario botao--bloco botao--grande" type="submit">Criar conta e abrir o painel</button>
+              <p class="form__nota">
+                Modo demonstração: os dados ficam salvos apenas neste navegador.
+              </p>
+            </form>
+          </div>
+
+          <!-- Formulário de login -->
+          <div class="abas__painel" role="tabpanel" id="painel-entrar" aria-labelledby="aba-entrar" hidden>
+            <form id="form-login" class="form" novalidate>
+              <p class="form__resumo-erro" role="alert" hidden></p>
+
+              <div class="campo">
+                <label for="login-email">E-mail</label>
+                <input id="login-email" name="email" type="email" autocomplete="username" inputmode="email" required
+                       aria-describedby="login-email-erro">
+                <p class="campo__erro" id="login-email-erro" hidden></p>
+              </div>
+
+              <div class="campo">
+                <label for="login-senha">Senha</label>
+                <div class="campo__senha">
+                  <input id="login-senha" name="senha" type="password" autocomplete="current-password" required
+                         aria-describedby="login-senha-erro">
+                  <button class="campo__mostrar" type="button" aria-controls="login-senha" aria-pressed="false" aria-label="Mostrar senha">
+                    <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-olho"></use></svg>
+                  </button>
+                </div>
+                <p class="campo__erro" id="login-senha-erro" hidden></p>
+              </div>
+
+              <button class="botao botao--primario botao--bloco botao--grande" type="submit">Entrar</button>
+              <button class="botao botao--contorno botao--bloco" type="button" id="botao-demo">
+                Entrar com a conta de demonstração
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================== RODAPÉ ============================== -->
+  <footer class="rodape">
+    <div class="container rodape__grade">
+      <div class="rodape__marca">
+        <a href="#inicio" class="marca marca--clara" aria-label="HydroSmart, voltar ao início">
+          <img src="assets/favicon.svg" alt="" width="32" height="32">
+          <span>HydroSmart</span>
+        </a>
+        <p class="rodape__slogan">“Sua água. Sua rotina. Seu cuidado.”</p>
+        <p>Tecnologia que hidrata.</p>
+      </div>
+
+      <section class="rodape__bloco" aria-labelledby="missao-titulo">
+        <h2 id="missao-titulo">Missão</h2>
+        <p>Ajudar a criar o hábito de beber água com tecnologia simples.</p>
+      </section>
+
+      <section class="rodape__bloco" aria-labelledby="visao-titulo">
+        <h2 id="visao-titulo">Visão</h2>
+        <p>Tornar a hidratação prática no dia a dia.</p>
+      </section>
+
+      <nav class="rodape__bloco" aria-labelledby="links-titulo">
+        <h2 id="links-titulo">Navegue</h2>
+        <ul role="list">
+          <li><a href="#como-funciona">Como funciona</a></li>
+          <li><a href="#recursos">Recursos</a></li>
+          <li><a href="#ficha-tecnica">Ficha técnica</a></li>
+          <li><a href="#cadastro">Criar conta</a></li>
+          <li><a href="dashboard.html">Painel do usuário</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="container rodape__base">
+      <p>© <span id="ano-atual">2026</span> HydroSmart. Todos os direitos reservados.</p>
+      <p>As metas sugeridas são uma referência geral e não substituem orientação de um profissional de saúde.</p>
+    </div>
+  </footer>
+
+  <!-- Região onde aparecem os avisos (toasts) -->
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+
+  <script>
+    // Detecta abertura via file:// (onde módulos ES não carregam) e mostra o aviso
+    if (location.protocol === 'file:') document.documentElement.classList.add('sem-servidor');
+  </script>
+  <noscript>
+    <p class="aviso-noscript">Ative o JavaScript para criar sua conta e usar o painel da HydroSmart.</p>
+  </noscript>
+</body>
+</html>

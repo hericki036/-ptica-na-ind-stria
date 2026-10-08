@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 560" role="img" aria-labelledby="t d">
+  <title id="t">Garrafa inteligente HydroSmart</title>
+  <desc id="d">Garrafa de 600 ml com degradê do azul-marinho ao ciano, tampa com alça e faixa de LEDs do sensor de consumo.</desc>
+  <defs>
+    <linearGradient id="corpo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0B2A6F"/>
+      <stop offset=".42" stop-color="#1E5BD8"/>
+      <stop offset=".78" stop-color="#4FC3EC"/>
+      <stop offset="1" stop-color="#A8E9F8"/>
+    </linearGradient>
+    <linearGradient id="brilho" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+      <stop offset=".5" stop-color="#fff" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="sombra-lateral" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity=".22"/>
+    </linearGradient>
+    <radialGradient id="sombra-chao" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#0B2A6F" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#0B2A6F" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Sombra no chão -->
+  <ellipse cx="110" cy="540" rx="78" ry="12" fill="url(#sombra-chao)"/>
+
+  <!-- Alça da tampa -->
+  <path d="M146 44c26 4 34 32 22 62-6 16-16 26-26 30" fill="none" stroke="#0A2463" stroke-width="9" stroke-linecap="round"/>
+  <path d="M146 44c26 4 34 32 22 62-6 16-16 26-26 30" fill="none" stroke="#1B3F95" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 5"/>
+
+  <!-- Tampa -->
+  <rect x="66" y="22" width="88" height="70" rx="16" fill="#0A2463"/>
+  <rect x="66" y="22" width="88" height="70" rx="16" fill="url(#sombra-lateral)"/>
+  <g stroke="#1B3F95" stroke-width="3" stroke-linecap="round">
+    <path d="M80 32v50M92 32v50M104 32v50M116 32v50M128 32v50M140 32v50"/>
+  </g>
+
+  <!-- Gargalo -->
+  <rect x="72" y="88" width="76" height="22" rx="6" fill="#0C2E7A"/>
+
+  <!-- Corpo -->
+  <path d="M70 108c-20 8-30 24-30 46v344c0 20 14 34 34 34h72c20 0 34-14 34-34V154c0-22-10-38-30-46z" fill="url(#corpo)"/>
+  <path d="M70 108c-20 8-30 24-30 46v344c0 20 14 34 34 34h72c20 0 34-14 34-34V154c0-22-10-38-30-46z" fill="url(#sombra-lateral)" opacity=".7"/>
+
+  <!-- Reflexo -->
+  <rect x="56" y="150" width="22" height="330" rx="11" fill="url(#brilho)"/>
+
+  <!-- Faixa de LEDs do sensor -->
+  <rect x="105" y="228" width="10" height="120" rx="5" fill="#0A2463" opacity=".55"/>
+  <g fill="#BDF1FF">
+    <circle cx="110" cy="240" r="2.6"/>
+    <circle cx="110" cy="258" r="2.6"/>
+    <circle cx="110" cy="276" r="2.6"/>
+    <circle cx="110" cy="294" r="2.6" opacity=".55"/>
+    <circle cx="110" cy="312" r="2.6" opacity=".35"/>
+    <circle cx="110" cy="330" r="2.6" opacity=".2"/>
+  </g>
+</svg>

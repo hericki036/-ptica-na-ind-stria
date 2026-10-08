@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<!--
+  dashboard.html — Painel do usuário (simulação do aplicativo HydroSmart)
+  Consumo do dia, garrafa, histórico de 7 dias, lembretes (CRUD) e conquistas.
+-->
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meu painel — HydroSmart</title>
+  <meta name="description" content="Painel do usuário HydroSmart: progresso diário de hidratação, status da garrafa, histórico, lembretes e conquistas.">
+  <meta name="theme-color" content="#0B2A6F">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/dashboard.js"></script>
+</head>
+<body class="pagina-painel">
+  <a class="pular-link" href="#conteudo">Pular para o conteúdo</a>
+
+  <div class="aviso-servidor" role="alert">
+    <p>
+      <strong>Abra o projeto por um servidor local.</strong>
+      Os módulos JavaScript não funcionam em <code>file://</code>. Rode <code>npx serve .</code> ou
+      <code>python -m http.server 8000</code> na pasta do projeto e acesse <code>http://localhost:8000/dashboard.html</code>.
+    </p>
+  </div>
+
+  <!-- ============================== TOPO ============================== -->
+  <header class="topo topo--painel">
+    <div class="container topo__interno">
+      <a href="index.html" class="marca" aria-label="HydroSmart, ir para o site">
+        <img src="assets/favicon.svg" alt="" width="32" height="32">
+        <span>HydroSmart</span>
+      </a>
+      <nav class="topo__conta" aria-label="Conta">
+        <span class="topo__usuario">
+          <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-usuario"></use></svg>
+          <span id="nome-usuario">Carregando…</span>
+        </span>
+        <a href="index.html" class="botao botao--fantasma botao--pequeno">
+          <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-casa"></use></svg>
+          <span class="some-no-celular">Site</span>
+        </a>
+        <button class="botao botao--contorno botao--pequeno" type="button" id="botao-sair">
+          <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-sair"></use></svg>
+          Sair
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo" class="painel container" aria-busy="true">
+    <div class="painel__cabecalho">
+      <div>
+        <h1 class="painel__titulo">Olá, <span id="primeiro-nome">…</span>!</h1>
+        <p class="painel__data" id="data-hoje"></p>
+      </div>
+      <p class="selo selo--demo">
+        <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-info"></use></svg>
+        Modo demonstração — dados salvos neste navegador
+      </p>
+    </div>
+
+    <!-- Estado sem garrafa: pareamento -->
+    <section class="cartao cartao--parear" id="secao-parear" aria-labelledby="parear-titulo" hidden>
+      <div class="cartao__cabecalho">
+        <h2 id="parear-titulo" class="cartao__titulo">
+          <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-bluetooth"></use></svg>
+          Parear minha HydroSmart
+        </h2>
+      </div>
+      <p>Você ainda não tem uma garrafa conectada. Digite o número de série impresso na base da garrafa para parear.</p>
+      <form id="form-parear" class="form form--linha" novalidate>
+        <p class="form__resumo-erro" role="alert" hidden></p>
+        <div class="campo">
+          <label for="parear-serie">Número de série</label>
+          <input id="parear-serie" name="numero_serie" type="text" autocomplete="off" placeholder="HS600-2026-000123"
+                 aria-describedby="parear-serie-dica parear-serie-erro" required>
+          <p class="campo__dica" id="parear-serie-dica">Formato: HS600-AAAA-NNNNNN.</p>
+          <p class="campo__erro" id="parear-serie-erro" hidden></p>
+        </div>
+        <div class="form__acoes">
+          <button class="botao botao--texto" type="button" id="botao-serie-demo">Gerar número de demonstração</button>
+          <button class="botao botao--primario" type="submit">Parear garrafa</button>
+        </div>
+      </form>
+    </section>
+
+    <div class="painel__grade">
+      <!-- ============ PROGRESSO DO DIA ============ -->
+      <section class="cartao cartao--progresso" aria-labelledby="progresso-titulo">
+        <div class="cartao__cabecalho">
+          <h2 id="progresso-titulo" class="cartao__titulo">
+            <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-gota"></use></svg>
+            Consumo de hoje
+          </h2>
+        </div>
+
+        <div class="progresso">
+          <p class="progresso__valor"><span id="total-hoje">0</span> <span class="progresso__unidade">ml</span></p>
+          <p class="progresso__meta">de <strong id="meta-hoje">2.000 ml</strong> · <span id="percentual-hoje">0%</span> da meta</p>
+
+          <div class="medidor" id="medidor-hoje" role="progressbar" aria-labelledby="progresso-titulo"
+               aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="0 de 2.000 ml">
+            <div class="medidor__preenchimento" id="medidor-preenchimento"></div>
+          </div>
+
+          <p class="progresso__status" id="status-hoje" aria-live="polite"></p>
+        </div>
+
+        <!-- Simulação do sensor de consumo -->
+        <div class="simulador" aria-labelledby="simulador-titulo" role="group">
+          <h3 id="simulador-titulo" class="simulador__titulo">Simular leitura do sensor</h3>
+          <p class="simulador__ajuda">Na garrafa real o sensor detecta o gole sozinho. Aqui você simula o consumo:</p>
+          <div class="simulador__botoes">
+            <button class="botao botao--suave" type="button" data-volume="150">Gole · 150 ml</button>
+            <button class="botao botao--suave" type="button" data-volume="250">Copo · 250 ml</button>
+            <button class="botao botao--suave" type="button" data-volume="300">Meia garrafa · 300 ml</button>
+          </div>
+          <form id="form-volume" class="form form--inline" novalidate>
+            <div class="campo">
+              <label for="volume-personalizado">Outro volume</label>
+              <div class="campo__unidade">
+                <input id="volume-personalizado" name="volume_ml" type="number" inputmode="numeric" min="1" max="600" step="10"
+                       placeholder="ex.: 200" aria-describedby="volume-personalizado-erro">
+                <span aria-hidden="true">ml</span>
+              </div>
+              <p class="campo__erro" id="volume-personalizado-erro" hidden></p>
+            </div>
+            <button class="botao botao--primario" type="submit">Registrar</button>
+          </form>
+        </div>
+
+        <details class="editar-meta">
+          <summary>
+            <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-alvo"></use></svg>
+            Alterar meta diária
+          </summary>
+          <form id="form-meta" class="form form--inline" novalidate>
+            <div class="campo">
+              <label for="nova-meta">Nova meta</label>
+              <div class="campo__unidade">
+                <input id="nova-meta" name="meta_diaria_ml" type="number" inputmode="numeric" min="1000" max="5000" step="50" required
+                       aria-describedby="nova-meta-dica nova-meta-erro">
+                <span aria-hidden="true">ml</span>
+              </div>
+              <p class="campo__dica" id="nova-meta-dica">Entre 1.000 e 5.000 ml. Vale a partir de hoje; os dias anteriores mantêm a meta da época.</p>
+              <p class="campo__erro" id="nova-meta-erro" hidden></p>
+            </div>
+            <button class="botao botao--primario" type="submit">Salvar meta</button>
+          </form>
+        </details>
+      </section>
+
+      <!-- ============ STATUS DA GARRAFA ============ -->
+      <section class="cartao cartao--garrafa" aria-labelledby="garrafa-titulo">
+        <div class="cartao__cabecalho">
+          <h2 id="garrafa-titulo" class="cartao__titulo">
+            <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-bluetooth"></use></svg>
+            Minha garrafa
+          </h2>
+          <p class="cartao__subtitulo" id="garrafa-modelo">—</p>
+        </div>
+
+        <div class="garrafa">
+          <!-- Garrafa com nível de água (o retângulo #agua sobe e desce) -->
+          <svg class="garrafa__figura" id="garrafa-figura" viewBox="0 0 120 260" role="img" aria-labelledby="garrafa-figura-titulo">
+            <title id="garrafa-figura-titulo">Nível da garrafa</title>
+            <defs>
+              <clipPath id="clip-corpo">
+                <path d="M38 52c-12 5-18 14-18 27v148c0 12 8 20 20 20h40c12 0 20-8 20-20V79c0-13-6-22-18-27z"/>
+              </clipPath>
+              <linearGradient id="grad-agua" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#6FD6F2"/>
+                <stop offset="1" stop-color="#1E5BD8"/>
+              </linearGradient>
+            </defs>
+            <rect class="garrafa__tampa" x="38" y="8" width="44" height="34" rx="9"/>
+            <rect class="garrafa__gargalo" x="42" y="40" width="36" height="13" rx="4"/>
+            <path class="garrafa__corpo" d="M38 52c-12 5-18 14-18 27v148c0 12 8 20 20 20h40c12 0 20-8 20-20V79c0-13-6-22-18-27z"/>
+            <g clip-path="url(#clip-corpo)">
+              <rect class="garrafa__agua" id="agua" x="0" y="52" width="120" height="195" fill="url(#grad-agua)"/>
+            </g>
+            <path class="garrafa__contorno" d="M38 52c-12 5-18 14-18 27v148c0 12 8 20 20 20h40c12 0 20-8 20-20V79c0-13-6-22-18-27z"/>
+            <g class="garrafa__leds" id="garrafa-leds">
+              <circle cx="60" cy="110" r="2.5"/><circle cx="60" cy="122" r="2.5"/><circle cx="60" cy="134" r="2.5"/>
+            </g>
+          </svg>
+
+          <dl class="garrafa__dados">
+            <div class="dado">
+              <dt>Nível</dt>
+              <dd><strong id="garrafa-nivel">—</strong></dd>
+            </div>
+            <div class="dado">
+              <dt>Bateria</dt>
+              <dd>
+                <span class="dado__linha">
+                  <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-bateria"></use></svg>
+                  <strong id="garrafa-bateria">—</strong>
+                  <span class="etiqueta etiqueta--alerta" id="garrafa-bateria-alerta" hidden>Bateria fraca</span>
+                </span>
+                <span class="mini-medidor" aria-hidden="true"><span id="garrafa-bateria-barra"></span></span>
+              </dd>
+            </div>
+            <div class="dado">
+              <dt>Conexão</dt>
+              <dd class="dado__linha">
+                <span class="indicador" id="garrafa-conexao-indicador" aria-hidden="true"></span>
+                <strong id="garrafa-conexao">—</strong>
+              </dd>
+            </div>
+            <div class="dado">
+              <dt>Última sincronização</dt>
+              <dd id="garrafa-sincronizacao">—</dd>
+            </div>
+            <div class="dado">
+              <dt><label for="garrafa-status">Status</label></dt>
+              <dd>
+                <select id="garrafa-status" class="seletor">
+                  <option value="ativa">Ativa</option>
+                  <option value="inativa">Inativa</option>
+                  <option value="manutencao">Em manutenção</option>
+                </select>
+              </dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="garrafa__acoes">
+          <button class="botao botao--suave" type="button" id="botao-encher">
+            <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-encher"></use></svg>
+            Encher garrafa
+          </button>
+          <button class="botao botao--suave" type="button" id="botao-conexao">
+            <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-bluetooth"></use></svg>
+            <span>Desconectar</span>
+          </button>
+          <button class="botao botao--suave" type="button" id="botao-recarregar">
+            <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-bateria"></use></svg>
+            Recarregar bateria
+          </button>
+        </div>
+      </section>
+
+      <!-- ============ HISTÓRICO 7 DIAS ============ -->
+      <section class="cartao cartao--historico" aria-labelledby="historico-titulo">
+        <div class="cartao__cabecalho cartao__cabecalho--linha">
+          <div>
+            <h2 id="historico-titulo" class="cartao__titulo">
+              <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-grafico"></use></svg>
+              Últimos 7 dias
+            </h2>
+            <p class="cartao__subtitulo">Consumo diário em ml</p>
+          </div>
+          <ul class="legenda" aria-label="Legenda do gráfico">
+            <li><span class="legenda__barra" aria-hidden="true"></span> Consumo</li>
+            <li><span class="legenda__linha" aria-hidden="true"></span> Meta diária</li>
+          </ul>
+        </div>
+
+        <ul class="resumo-historico" id="resumo-historico" role="list"></ul>
+
+        <div class="grafico" id="grafico-historico">
+          <div class="grafico__dica" id="grafico-dica" role="tooltip" hidden></div>
+        </div>
+
+        <details class="tabela-detalhes">
+          <summary>Ver dados em tabela</summary>
+          <div class="tabela-rolagem">
+            <table class="tabela-dados">
+              <caption class="visualmente-oculto">Consumo de água nos últimos 7 dias</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Dia</th>
+                  <th scope="col" class="numero">Consumo</th>
+                  <th scope="col" class="numero">Meta</th>
+                  <th scope="col" class="numero">% da meta</th>
+                  <th scope="col">Situação</th>
+                </tr>
+              </thead>
+              <tbody id="tabela-historico"></tbody>
+            </table>
+          </div>
+        </details>
+      </section>
+
+      <!-- ============ LEITURAS DE HOJE ============ -->
+      <section class="cartao cartao--leituras" aria-labelledby="leituras-titulo">
+        <div class="cartao__cabecalho">
+          <h2 id="leituras-titulo" class="cartao__titulo">
+            <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-lista"></use></svg>
+            Leituras de hoje
+          </h2>
+          <p class="cartao__subtitulo">Registradas pelo sensor</p>
+        </div>
+        <ol class="leituras" id="lista-leituras" role="list"></ol>
+        <p class="vazio" id="leituras-vazio" hidden>Nenhum gole registrado hoje. Que tal começar agora?</p>
+      </section>
+
+      <!-- ============ LEMBRETES (CRUD) ============ -->
+      <section class="cartao cartao--lembretes" aria-labelledby="lembretes-titulo">
+        <div class="cartao__cabecalho cartao__cabecalho--linha">
+          <div>
+            <h2 id="lembretes-titulo" class="cartao__titulo">
+              <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-sino"></use></svg>
+              Lembretes
+            </h2>
+            <p class="cartao__subtitulo" id="proximo-lembrete">—</p>
+          </div>
+          <button class="botao botao--primario botao--pequeno" type="button" id="botao-novo-lembrete">
+            <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-mais"></use></svg>
+            Novo lembrete
+          </button>
+        </div>
+
+        <ul class="lembretes" id="lista-lembretes" role="list"></ul>
+        <p class="vazio" id="lembretes-vazio" hidden>Você ainda não tem lembretes. Crie o primeiro!</p>
+
+        <div class="notificacoes">
+          <button class="botao botao--texto" type="button" id="botao-notificacoes">
+            <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-sino"></use></svg>
+            Ativar notificações do navegador
+          </button>
+          <p class="campo__dica" id="notificacoes-status" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <!-- ============ CONQUISTAS ============ -->
+      <section class="cartao cartao--conquistas" aria-labelledby="conquistas-titulo">
+        <div class="cartao__cabecalho">
+          <h2 id="conquistas-titulo" class="cartao__titulo">
+            <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-trofeu"></use></svg>
+            Conquistas
+          </h2>
+          <p class="cartao__subtitulo" id="conquistas-resumo">—</p>
+        </div>
+        <ul class="conquistas" id="lista-conquistas" role="list"></ul>
+      </section>
+    </div>
+
+    <footer class="painel__rodape">
+      <p>Os dados deste painel são simulados e ficam guardados apenas no seu navegador.</p>
+      <button class="botao botao--texto" type="button" id="botao-resetar">
+        <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-recarregar"></use></svg>
+        Restaurar dados de demonstração
+      </button>
+    </footer>
+  </main>
+
+  <!-- ============ DIÁLOGO: criar/editar lembrete ============ -->
+  <dialog class="dialogo" id="dialogo-lembrete" aria-labelledby="dialogo-lembrete-titulo">
+    <form id="form-lembrete" class="form" method="dialog" novalidate>
+      <div class="dialogo__cabecalho">
+        <h2 id="dialogo-lembrete-titulo">Novo lembrete</h2>
+        <button class="botao-icone" type="button" data-fechar aria-label="Fechar">
+          <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-fechar"></use></svg>
+        </button>
+      </div>
+
+      <p class="form__resumo-erro" role="alert" hidden></p>
+      <input type="hidden" name="lembrete_id">
+
+      <div class="form__linha">
+        <div class="campo">
+          <label for="lembrete-hora">Horário</label>
+          <input id="lembrete-hora" name="hora" type="time" required aria-describedby="lembrete-hora-erro">
+          <p class="campo__erro" id="lembrete-hora-erro" hidden></p>
+        </div>
+        <div class="campo">
+          <label for="lembrete-rotulo">Nome <span class="campo__opcional">(opcional)</span></label>
+          <input id="lembrete-rotulo" name="rotulo" type="text" maxlength="60" placeholder="ex.: Depois do almoço"
+                 aria-describedby="lembrete-rotulo-erro">
+          <p class="campo__erro" id="lembrete-rotulo-erro" hidden></p>
+        </div>
+      </div>
+
+      <fieldset class="campo dias" aria-describedby="lembrete-dias-erro">
+        <legend>Dias da semana</legend>
+        <div class="dias__opcoes">
+          <label class="dia"><input type="checkbox" name="dia" value="0"><span>Dom</span></label>
+          <label class="dia"><input type="checkbox" name="dia" value="1"><span>Seg</span></label>
+          <label class="dia"><input type="checkbox" name="dia" value="2"><span>Ter</span></label>
+          <label class="dia"><input type="checkbox" name="dia" value="3"><span>Qua</span></label>
+          <label class="dia"><input type="checkbox" name="dia" value="4"><span>Qui</span></label>
+          <label class="dia"><input type="checkbox" name="dia" value="5"><span>Sex</span></label>
+          <label class="dia"><input type="checkbox" name="dia" value="6"><span>Sáb</span></label>
+        </div>
+        <div class="dias__atalhos">
+          <button class="botao botao--texto botao--pequeno" type="button" data-dias="0,1,2,3,4,5,6">Todos</button>
+          <button class="botao botao--texto botao--pequeno" type="button" data-dias="1,2,3,4,5">Seg a Sex</button>
+          <button class="botao botao--texto botao--pequeno" type="button" data-dias="0,6">Fim de semana</button>
+        </div>
+        <p class="campo__erro" id="lembrete-dias-erro" hidden></p>
+      </fieldset>
+
+      <label class="interruptor-linha">
+        <input type="checkbox" name="ativo" checked>
+        <span>Lembrete ativo</span>
+      </label>
+
+      <div class="dialogo__acoes">
+        <button class="botao botao--fantasma" type="button" data-fechar>Cancelar</button>
+        <button class="botao botao--primario" type="submit" id="botao-salvar-lembrete">Salvar lembrete</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ============ DIÁLOGO: confirmação ============ -->
+  <dialog class="dialogo dialogo--pequeno" id="dialogo-confirmar" aria-labelledby="confirmar-titulo" aria-describedby="confirmar-texto">
+    <form method="dialog">
+      <h2 id="confirmar-titulo">Tem certeza?</h2>
+      <p id="confirmar-texto"></p>
+      <div class="dialogo__acoes">
+        <button class="botao botao--fantasma" value="cancelar" autofocus>Cancelar</button>
+        <button class="botao botao--perigo" value="confirmar" id="confirmar-botao">Excluir</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+
+  <script>
+    if (location.protocol === 'file:') document.documentElement.classList.add('sem-servidor');
+  </script>
+  <noscript>
+    <p class="aviso-noscript">Ative o JavaScript para usar o painel da HydroSmart.</p>
+  </noscript>
+</body>
+</html>
