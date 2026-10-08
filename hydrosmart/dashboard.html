@@ -12,6 +12,17 @@
   <meta name="theme-color" content="#0B2A6F">
   <meta name="robots" content="noindex">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script>
+    // Aplica o tema salvo (ou o do sistema) antes de desenhar a página — evita piscar claro → escuro
+    (function () {
+      var tema = null;
+      try { tema = localStorage.getItem('hydrosmart_tema'); } catch (e) { /* storage bloqueado */ }
+      if (tema !== 'claro' && tema !== 'escuro') {
+        tema = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'escuro' : 'claro';
+      }
+      document.documentElement.setAttribute('data-tema', tema);
+    })();
+  </script>
   <link rel="stylesheet" href="css/style.css">
   <script type="module" src="js/dashboard.js"></script>
 </head>
@@ -29,7 +40,7 @@
   <!-- ============================== TOPO ============================== -->
   <header class="topo topo--painel">
     <div class="container topo__interno">
-      <a href="index.html" class="marca" aria-label="HydroSmart, ir para o site">
+      <a href="./" class="marca" aria-label="HydroSmart, ir para o site">
         <img src="assets/favicon.svg" alt="" width="32" height="32">
         <span>HydroSmart</span>
       </a>
@@ -38,7 +49,11 @@
           <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-usuario"></use></svg>
           <span id="nome-usuario">Carregando…</span>
         </span>
-        <a href="index.html" class="botao botao--fantasma botao--pequeno">
+        <button class="botao-tema" type="button" data-alternar-tema aria-pressed="false" aria-label="Modo escuro" title="Mudar para o modo escuro">
+          <svg class="icone icone--lua" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-lua"></use></svg>
+          <svg class="icone icone--sol" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-sol"></use></svg>
+        </button>
+        <a href="./" class="botao botao--fantasma botao--pequeno" aria-label="Ir para o site">
           <svg class="icone" aria-hidden="true" focusable="false"><use href="assets/icones.svg#i-casa"></use></svg>
           <span class="some-no-celular">Site</span>
         </a>

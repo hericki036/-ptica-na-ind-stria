@@ -54,8 +54,22 @@
   --cor-erro: #C0283B;
   --cor-erro-fundo: #FDECEE;
 
-  /* Degradês */
-  --gradiente-agua: linear-gradient(180deg, var(--cor-marinho) 0%, var(--cor-azul) 55%, var(--cor-ciano-claro) 100%);
+  /* Papéis de cor (mudam no modo escuro) */
+  --cor-titulo: var(--cor-marinho);        /* títulos e números de destaque */
+  --cor-sobre-destaque: #FFFFFF;           /* texto sobre fundo azul/vermelho */
+  --cor-violeta-forte: #5B35D5;            /* fundo dos selos numéricos */
+  --cor-erro-hover: #A11F31;
+  --cor-dica-fundo: #071B4A;
+  --topo-fundo: rgba(255, 255, 255, 0.88);
+  --hero-faixa: linear-gradient(180deg, #DCE8FD 0%, #C7EEFB 100%);
+  --selo-demo-borda: #BDEBF8;
+  --garrafa-tampa: #0B2A6F;
+  --garrafa-gargalo: #0C2E7A;
+  --garrafa-contorno: #0B2A6F;
+  --sombra-garrafa: rgba(11, 42, 111, 0.25);
+
+  /* Degradês (a garrafa mantém as cores da marca nos dois temas) */
+  --gradiente-agua: linear-gradient(180deg, #0B2A6F 0%, #1E5BD8 55%, #6FD6F2 100%);
   --gradiente-hero: linear-gradient(160deg, #FFFFFF 0%, #EEF4FF 55%, #D9F3FC 100%);
   --gradiente-destaque: linear-gradient(150deg, var(--cor-marinho) 0%, #133C9E 60%, #1660C4 100%);
 
@@ -95,6 +109,65 @@
   --largura-max: 1180px;
   --altura-topo: 64px;
   --margem-lateral: 1rem;
+
+  color-scheme: light;
+}
+
+/* ---------------------------------------------------------------------
+   1.1 TEMA ESCURO
+   Ativado por data-tema="escuro" no <html> (botão sol/lua, js/tema.js).
+   Só as variáveis mudam; os componentes usam sempre os tokens acima.
+   Contraste dos textos conferido (>= 4,5:1) sobre --cor-fundo e
+   --cor-superficie.
+   --------------------------------------------------------------------- */
+:root[data-tema="escuro"] {
+  color-scheme: dark;
+
+  --cor-titulo: #DCE6FF;
+  --cor-azul: #6EA0FF;
+  --cor-azul-hover: #8DB5FF;
+  --cor-azul-claro: #9BC0FF;
+  --cor-azul-50: #16244A;
+  --cor-azul-100: #1F3363;
+  --cor-azul-200: #2D4A8A;
+  --cor-ciano: #3CCBF0;
+  --cor-ciano-claro: #7FE0F7;
+  --cor-ciano-50: #0F2C3D;
+  --cor-violeta: #B49BFF;
+
+  --cor-fundo: #0A1228;
+  --cor-superficie: #111C38;
+  --cor-borda: #24335A;
+  --cor-borda-forte: #3A4C78;
+  --cor-texto: #E8EEFC;
+  --cor-texto-2: #B4C1DE;
+  --cor-texto-3: #93A2C4;
+  --cor-grade: #1E2A4A;
+
+  --cor-sucesso: #4ADE9A;
+  --cor-sucesso-fundo: #0F3328;
+  --cor-alerta: #F5B54A;
+  --cor-alerta-fundo: #3A2A0C;
+  --cor-erro: #FF8A98;
+  --cor-erro-fundo: #3D1520;
+  --cor-erro-hover: #FFA8B3;
+
+  --cor-sobre-destaque: #0A1228;
+  --cor-dica-fundo: #050B1C;
+  --topo-fundo: rgba(10, 18, 40, 0.86);
+  --hero-faixa: linear-gradient(180deg, #13244D 0%, #0F3247 100%);
+  --selo-demo-borda: #1E4A5E;
+  --garrafa-tampa: #2D4A8A;
+  --garrafa-gargalo: #24407A;
+  --garrafa-contorno: #6EA0FF;
+  --sombra-garrafa: rgba(110, 160, 255, 0.22);
+
+  --gradiente-hero: linear-gradient(160deg, #0A1228 0%, #0E1C40 55%, #0B2A44 100%);
+  --gradiente-destaque: linear-gradient(150deg, #0B1F55 0%, #102F7A 60%, #134E9E 100%);
+
+  --sombra-sm: 0 1px 2px rgba(0, 0, 0, 0.35), 0 1px 3px rgba(0, 0, 0, 0.3);
+  --sombra: 0 4px 12px rgba(0, 0, 0, 0.35), 0 2px 4px rgba(0, 0, 0, 0.25);
+  --sombra-lg: 0 24px 48px -16px rgba(0, 0, 0, 0.6);
 }
 
 /* ---------------------------------------------------------------------
@@ -120,6 +193,7 @@ body {
   color: var(--cor-texto);
   background: var(--cor-fundo);
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 /* Atributo hidden sempre vence classes com display definido */
@@ -177,7 +251,7 @@ code {
 
 ::selection {
   background: var(--cor-azul-100);
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
 }
 
 /* Link "Pular para o conteúdo" — aparece só ao receber foco */
@@ -313,7 +387,7 @@ code {
 
 .botao--primario {
   background: var(--cor-azul);
-  color: #fff;
+  color: var(--cor-sobre-destaque);
   box-shadow: 0 8px 20px -10px rgba(30, 91, 216, 0.8);
 }
 
@@ -342,7 +416,7 @@ code {
 .botao--suave {
   background: var(--cor-azul-50);
   border-color: var(--cor-azul-100);
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
 }
 
 .botao--suave:hover:not(:disabled) {
@@ -363,11 +437,11 @@ code {
 
 .botao--perigo {
   background: var(--cor-erro);
-  color: #fff;
+  color: var(--cor-sobre-destaque);
 }
 
 .botao--perigo:hover:not(:disabled) {
-  background: #A11F31;
+  background: var(--cor-erro-hover);
 }
 
 .botao--grande {
@@ -416,7 +490,7 @@ code {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(255, 255, 255, 0.88);
+  background: var(--topo-fundo);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid transparent;
@@ -441,7 +515,7 @@ code {
   display: inline-flex;
   align-items: center;
   gap: var(--esp-2);
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
   font-size: 1.25rem;
   font-weight: 800;
   letter-spacing: -0.02em;
@@ -465,7 +539,7 @@ code {
   border: 0;
   border-radius: var(--raio-sm);
   background: transparent;
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
   cursor: pointer;
 }
 
@@ -529,6 +603,52 @@ code {
   border-top: 1px solid var(--cor-borda);
 }
 
+/* Ferramentas do topo: botão de tema + menu (celular) */
+.topo__ferramentas {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-1);
+}
+
+/* Botão sol/lua (modo claro/escuro) */
+.botao-tema {
+  display: inline-grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--cor-borda);
+  border-radius: 50%;
+  background: var(--cor-superficie);
+  color: var(--cor-titulo);
+  cursor: pointer;
+  transition: background-color var(--transicao), border-color var(--transicao), color var(--transicao), transform var(--transicao);
+}
+
+.botao-tema:hover {
+  border-color: var(--cor-azul);
+  color: var(--cor-azul);
+}
+
+.botao-tema:active {
+  transform: rotate(-20deg);
+}
+
+.botao-tema .icone {
+  width: 20px;
+  height: 20px;
+}
+
+/* Mostra a lua no tema claro e o sol no tema escuro */
+.botao-tema .icone--sol,
+:root[data-tema="escuro"] .botao-tema .icone--lua {
+  display: none;
+}
+
+:root[data-tema="escuro"] .botao-tema .icone--sol {
+  display: inline-block;
+}
+
 /* Topo do painel */
 .topo__conta {
   display: flex;
@@ -564,7 +684,7 @@ code {
   right: 0;
   bottom: 0;
   width: 70%;
-  background: linear-gradient(180deg, #DCE8FD 0%, #C7EEFB 100%);
+  background: var(--hero-faixa);
   clip-path: polygon(38% 0, 100% 0, 100% 100%, 0 100%);
   opacity: 0.55;
 }
@@ -578,7 +698,7 @@ code {
 
 .hero__titulo {
   margin-top: var(--esp-4);
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
   font-size: var(--texto-3xl);
   font-weight: 800;
   letter-spacing: -0.035em;
@@ -639,7 +759,7 @@ code {
   position: relative;
   z-index: 1;
   width: clamp(150px, 40vw, 230px);
-  filter: drop-shadow(0 30px 30px rgba(11, 42, 111, 0.25));
+  filter: drop-shadow(0 30px 30px var(--sombra-garrafa));
   animation: flutuar 6s ease-in-out infinite;
 }
 
@@ -691,7 +811,7 @@ code {
 }
 
 .hero__app-valor {
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
   font-size: 2rem;
   font-weight: 800;
   line-height: 1.1;
@@ -730,7 +850,7 @@ code {
   background: var(--cor-superficie);
   border-radius: var(--raio-pill);
   box-shadow: var(--sombra);
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
   font-size: var(--texto-sm);
   font-weight: 600;
 }
@@ -774,7 +894,7 @@ code {
 }
 
 .secao__titulo {
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
   font-size: var(--texto-2xl);
   font-weight: 800;
 }
@@ -824,7 +944,7 @@ code {
 
 .cartao-problema h3 {
   margin-bottom: var(--esp-1);
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
   font-size: var(--texto-lg);
 }
 
@@ -861,7 +981,7 @@ code {
 }
 
 .citacao p {
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
   font-weight: 600;
 }
 
@@ -920,7 +1040,7 @@ code {
   width: 34px;
   height: 34px;
   border-radius: 10px;
-  background: var(--cor-violeta);
+  background: var(--cor-violeta-forte);
   color: #fff;
   font-weight: 800;
 }
@@ -931,7 +1051,7 @@ code {
 
 .passo__titulo {
   margin-bottom: var(--esp-2);
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
   font-size: var(--texto-md);
 }
 
@@ -967,7 +1087,7 @@ code {
 
 .recurso h3 {
   margin: var(--esp-4) 0 var(--esp-2);
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
   font-size: var(--texto-md);
 }
 
@@ -1018,7 +1138,7 @@ code {
 
 .linha-tempo__item:last-child .linha-tempo__marcador {
   background: var(--cor-azul);
-  color: #fff;
+  color: var(--cor-sobre-destaque);
 }
 
 .linha-tempo__conteudo {
@@ -1033,7 +1153,7 @@ code {
   display: flex;
   align-items: center;
   gap: var(--esp-2);
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
   font-size: var(--texto-lg);
 }
 
@@ -1076,7 +1196,7 @@ code {
   background: var(--cor-superficie);
   border-radius: var(--raio-pill);
   box-shadow: var(--sombra);
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
   font-weight: 600;
 }
 
@@ -1116,7 +1236,7 @@ code {
 .tabela-ficha th {
   width: 36%;
   background: var(--cor-azul-50);
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
   font-weight: 700;
 }
 
@@ -1179,7 +1299,7 @@ code {
 }
 
 .persona h3 {
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
   font-size: var(--texto-lg);
 }
 
@@ -1198,7 +1318,7 @@ code {
   padding: 0.25rem 0.75rem;
   border-radius: var(--raio-pill);
   background: var(--cor-ciano-50);
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
   font-weight: 700;
 }
 
@@ -1559,7 +1679,7 @@ code {
 }
 
 .toast__texto strong {
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
 }
 
 .toast__fechar {
@@ -1595,7 +1715,8 @@ code {
   width: min(540px, calc(100vw - 2rem));
   max-height: calc(100dvh - 2rem);
   padding: var(--esp-5);
-  border: 0;
+  border: 1px solid var(--cor-borda);
+  background: var(--cor-superficie);
   border-radius: var(--raio-lg);
   box-shadow: var(--sombra-lg);
   color: var(--cor-texto);
@@ -1619,7 +1740,7 @@ code {
 }
 
 .dialogo h2 {
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
   font-size: var(--texto-lg);
 }
 
@@ -1680,7 +1801,7 @@ code {
 .dia input:checked + span {
   background: var(--cor-azul);
   border-color: var(--cor-azul);
-  color: #fff;
+  color: var(--cor-sobre-destaque);
 }
 
 .dia input:focus-visible + span {
@@ -1715,7 +1836,7 @@ code {
 }
 
 .painel__titulo {
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
   font-size: var(--texto-2xl);
   font-weight: 800;
 }
@@ -1731,8 +1852,8 @@ code {
 
 .selo--demo {
   background: var(--cor-ciano-50);
-  border-color: #BDEBF8;
-  color: var(--cor-marinho);
+  border-color: var(--selo-demo-borda);
+  color: var(--cor-titulo);
   font-weight: 500;
 }
 
@@ -1768,7 +1889,7 @@ code {
   display: flex;
   align-items: center;
   gap: var(--esp-2);
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
   font-size: var(--texto-lg);
   font-weight: 700;
 }
@@ -1796,7 +1917,7 @@ code {
 
 /* Progresso do dia: número principal + medidor */
 .progresso__valor {
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
   font-size: clamp(3rem, 2.4rem + 3vw, 4rem);
   font-weight: 800;
   line-height: 1;
@@ -1846,7 +1967,7 @@ code {
   gap: var(--esp-2);
   min-height: 1.6em;
   margin-top: var(--esp-3);
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
   font-size: var(--texto-sm);
   font-weight: 600;
 }
@@ -1863,7 +1984,7 @@ code {
 }
 
 .simulador__titulo {
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
   font-size: var(--texto-base);
 }
 
@@ -1918,13 +2039,13 @@ code {
   height: auto;
 }
 
-.garrafa__tampa { fill: var(--cor-marinho); }
-.garrafa__gargalo { fill: #0C2E7A; }
+.garrafa__tampa { fill: var(--garrafa-tampa); }
+.garrafa__gargalo { fill: var(--garrafa-gargalo); }
 .garrafa__corpo { fill: var(--cor-azul-50); }
 
 .garrafa__contorno {
   fill: none;
-  stroke: var(--cor-marinho);
+  stroke: var(--garrafa-contorno);
   stroke-width: 3;
 }
 
@@ -2091,7 +2212,7 @@ code {
 
 .resumo__valor {
   display: block;
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
   font-size: var(--texto-md);
   font-weight: 700;
 }
@@ -2181,8 +2302,9 @@ code {
   position: absolute;
   z-index: 5;
   padding: var(--esp-2) var(--esp-3);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--raio-sm);
-  background: var(--cor-marinho-escuro);
+  background: var(--cor-dica-fundo);
   box-shadow: var(--sombra);
   color: #DCE6FA;
   font-size: var(--texto-xs);
@@ -2279,7 +2401,7 @@ code {
 }
 
 .leitura__volume {
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
   font-weight: 700;
 }
 
@@ -2332,7 +2454,7 @@ code {
 
 .lembrete__hora {
   min-width: 3.4em;
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
   font-size: var(--texto-lg);
   font-weight: 800;
   font-variant-numeric: tabular-nums;
@@ -2449,7 +2571,7 @@ code {
 }
 
 .conquista__nome {
-  color: var(--cor-marinho);
+  color: var(--cor-titulo);
   font-size: var(--texto-sm);
   font-weight: 700;
 }
@@ -2472,7 +2594,7 @@ code {
   right: var(--esp-2);
   padding: 2px var(--esp-2);
   border-radius: var(--raio-pill);
-  background: var(--cor-violeta);
+  background: var(--cor-violeta-forte);
   color: #fff;
   font-size: var(--texto-xs);
   font-weight: 800;

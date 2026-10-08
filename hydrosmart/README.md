@@ -6,6 +6,7 @@ Projeto web completo da startup HydroSmart, feito a partir da apresentação ofi
 
 - **Landing page institucional** (`index.html`): problema, solução em 4 passos, recursos, linha do tempo da empresa (Ideia → Protótipo → Produto → Empresa), ficha técnica, personas e cadastro/login.
 - **Painel do usuário** (`dashboard.html`): simulação do app com progresso diário, status da garrafa, histórico de 7 dias em SVG puro, lembretes (CRUD) e conquistas.
+- **Modo claro e escuro** nas duas páginas (botão de sol/lua no topo), com a escolha salva no navegador.
 - **Banco de dados** `hydrosmart_db` em MySQL/MariaDB (`database/database.sql`) e SQLite (`database/database.sqlite.sql`), com view, trigger e dados de demonstração.
 - **Camada de integração** (`js/api.js`): funções `fetch()` para uma API REST. Nesta entrega, um **servidor simulado em localStorage** (`js/mock-servidor.js`) responde com a mesma estrutura do banco, então tudo funciona só no navegador.
 
@@ -35,6 +36,7 @@ hydrosmart/
     ├── validacao.js            # Regras de validação (front e "servidor")
     ├── utils.js                # Datas e formatação pt-BR (funções puras)
     ├── ui.js                   # Utilitários de interface (toasts, erros, ícones)
+    ├── tema.js                 # Modo claro/escuro (botão sol/lua)
     ├── app.js                  # Comportamento da landing page
     └── dashboard.js            # Comportamento do painel
 ```
@@ -45,7 +47,7 @@ Dependências entre os módulos:
 app.js ───────┐
               ├──> api.js ──> mock-servidor.js ──> validacao.js, utils.js
 dashboard.js ─┘       (só quando CONFIG.usarMock = true)
-   └──> validacao.js, utils.js, ui.js
+   └──> validacao.js, utils.js, ui.js, tema.js
 ```
 
 ---
@@ -67,6 +69,14 @@ python -m http.server 8000
 
 Acesse `http://localhost:8000` (ou a porta que o servidor mostrar). Se a página for aberta por `file://`, um aviso no topo explica o que fazer.
 
+### Problemas comuns
+
+| Sintoma | Causa e solução |
+|---|---|
+| Página sem estilo ou sem funcionar ao dar dois cliques no `index.html` | O navegador bloqueia módulos JS em `file://`. Use um dos servidores acima. |
+| `Cannot GET /index.html/` ao sair do painel ou clicar em "Site" | Algum servidor (ou um redirecionamento antigo guardado no cache do navegador) trocava `/index.html` por `/index.html/`. O painel agora volta para a **raiz do site** (`./`), que todo servidor entrega. Se ainda aparecer, limpe o cache do site (Ctrl+Shift+R ou "Limpar dados de navegação") e acesse `http://localhost:PORTA/`. |
+| Dados "presos" de testes antigos | Botão **"Restaurar dados de demonstração"** no rodapé do painel. |
+
 ### Contas de demonstração
 
 | Persona | E-mail | Senha | Meta |
@@ -84,6 +94,7 @@ Na aba **Entrar** há o botão **"Entrar com a conta de demonstração"** (Ana, 
 - **Meta diária**: alterar entre 1.000 e 5.000 ml. A nova meta vale a partir de hoje; os dias anteriores mantêm a meta da época (tabela `metas`).
 - **Lembretes**: criar, editar, pausar e excluir. Com o painel aberto, um aviso aparece na hora marcada (e uma notificação do sistema, se você permitir).
 - **Restaurar dados de demonstração**: no rodapé do painel.
+- **Modo claro/escuro**: botão de sol/lua no topo (também no site). A escolha vale para as duas páginas e fica salva; sem escolha, o site segue o tema do sistema operacional.
 
 ---
 
@@ -246,7 +257,7 @@ Todas as rotas (menos cadastro e login) exigem `Authorization: Bearer <token>`. 
 3. Grava só se tudo deu certo. Se der erro no meio, nada é salvo, como numa transação.
 4. Devolve um `Response` de verdade (status + JSON), então o código das telas é o mesmo para o mock e para o backend real.
 
-A sessão fica na chave `hydrosmart_sessao` (`{ token, usuario }`). As senhas do mock são guardadas com SHA-256 + sal (Web Crypto), mas o localStorage não é um lugar seguro: o mock serve apenas para demonstração. O backend real usa **bcrypt**.
+A sessão fica na chave `hydrosmart_sessao` (`{ token, usuario }`) e o tema escolhido em `hydrosmart_tema` (`"claro"` ou `"escuro"`). As senhas do mock são guardadas com SHA-256 + sal (Web Crypto), mas o localStorage não é um lugar seguro: o mock serve apenas para demonstração. O backend real usa **bcrypt**.
 
 Para começar do zero: botão **"Restaurar dados de demonstração"** no painel, ou `localStorage.clear()` no console.
 
@@ -671,6 +682,7 @@ app.get('/', (req, res) => res.sendFile(path.join(raiz, 'index.html')));
 - **Gráfico acessível:** cada barra é focável e tem descrição completa; dica no hover e no foco; tabela "Ver dados em tabela" com os mesmos números; nenhuma informação depende só de cor (ícones e texto acompanham status).
 - **Contraste:** textos com contraste mínimo de 4,5:1 (cinzas e azuis conferidos), barras do gráfico ≥ 3:1 contra o fundo.
 - **Movimento:** animações de revelação ao rolar com `IntersectionObserver` e desligadas com `prefers-reduced-motion`. Sem JavaScript, todo o conteúdo continua visível.
+- **Modo escuro:** todas as cores são variáveis em `:root`; o tema escuro só redefine essas variáveis em `:root[data-tema="escuro"]` (com `color-scheme: dark` para campos e barras de rolagem). Um script curto no `<head>` aplica o tema antes de desenhar a página, evitando o "piscar" de claro para escuro. O botão usa `aria-pressed` ("Modo escuro" ligado/desligado).
 - **Paleta:** tirada da apresentação, com azul-marinho → azul → ciano da garrafa sobre branco e azul-gelo, e o violeta dos títulos como cor de destaque. Todas as cores, espaçamentos, raios e sombras são variáveis em `:root`.
 - **Responsivo:** mobile-first com breakpoints em **480px**, **768px** e **1024px**. O painel usa grid de 12 colunas no desktop e o gráfico é redesenhado na largura real do cartão (`ResizeObserver`).
 
@@ -684,6 +696,8 @@ app.get('/', (req, res) => res.sendFile(path.join(raiz, 'index.html')));
 | `database.sqlite.sql` | SQLite 3.45 | Mesmos 14 registros de conquistas e mesma view do MySQL |
 | Mock REST | 30 verificações em Node (cadastro, login, 401/403/409/422, CRUD de lembretes, troca de meta, trigger, pareamento, reset) | Todas passaram; conquistas e histórico idênticos aos do SQL |
 | Interface | Chromium (Playwright) em 390, 800, 1024 e 1280 px | Fluxos de cadastro, login, gole, garrafa, meta e CRUD de lembretes; sem erros no console; sem rolagem horizontal |
+| Acessibilidade | axe-core (regras WCAG 2 A/AA) na landing, no painel e no diálogo, nos temas claro e escuro | Nenhuma violação, inclusive de contraste |
+| Navegação Site/Sair | Live Server, Five Server, serve, http-server e lite-server | Volta para a raiz do site em todos |
 | Backend real | `server.js` acima + MariaDB, com o front em `usarMock: false` | Login, painel, leituras, lembretes e troca de meta funcionando sem mudar o front |
 
 ---
@@ -700,7 +714,7 @@ app.get('/', (req, res) => res.sendFile(path.join(raiz, 'index.html')));
    - Web/PWA: `manifest.json` + Service Worker + Push API com chaves VAPID (biblioteca `web-push`), guardando as inscrições numa tabela `inscricoes_push (usuario_id, endpoint, p256dh, auth)`.
    - App nativo: Firebase Cloud Messaging (Android) e APNs (iOS).
    - Agendador no servidor (cron a cada minuto) consulta `lembretes` com `FIND_IN_SET(DAYOFWEEK(CURDATE()) - 1, dias_semana)` e a hora atual. **Lembrete inteligente:** não avisar quem já bateu a meta do dia ou bebeu nos últimos 30 minutos.
-4. **Produto:** sugestão de meta por clima e atividade física, relatórios semanais por e-mail, modo escuro, compartilhamento de conquistas.
+4. **Produto:** sugestão de meta por clima e atividade física, relatórios semanais por e-mail, compartilhamento de conquistas.
 5. **LGPD:** termo de consentimento no cadastro, exportação dos dados e exclusão de conta. O `ON DELETE CASCADE` já remove tudo do usuário, e o mock tem a rota `DELETE /usuarios/:id`.
 
 ---

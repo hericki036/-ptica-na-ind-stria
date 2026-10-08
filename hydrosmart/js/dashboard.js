@@ -8,6 +8,7 @@
  *   4. Histórico de 7 dias em SVG puro (com dica, teclado e tabela)
  *   5. Lembretes: CRUD completo + aviso na hora marcada
  *   6. Conquistas (badges) geradas pelo "trigger" do banco
+ *   7. Modo claro/escuro (tema.js)
  *
  * Toda leitura/escrita passa por api.js — nada aqui sabe se os dados vêm
  * do localStorage (mock) ou de um backend real.
@@ -26,6 +27,7 @@ import {
   $, $$, criar, icone, mostrarToast, definirErroCampo, aplicarErros, limparErros,
   mostrarErroFormulario, definirCarregando, animarNumero,
 } from './ui.js';
+import { iniciarTema } from './tema.js';
 
 /* ==================================================================== */
 /* Constantes e estado                                                   */
@@ -88,7 +90,7 @@ async function carregarTudo() {
 function tratarErro(erro) {
   if (erro instanceof ErroApi && erro.status === 401) {
     mostrarToast('Sua sessão expirou. Entre novamente.', { tipo: 'erro' });
-    setTimeout(() => window.location.replace('index.html#cadastro'), 1200);
+    setTimeout(() => window.location.replace('./#cadastro'), 1200);
     return;
   }
   console.error(erro);
@@ -902,7 +904,7 @@ function renderizarConquistas(idsNovas = []) {
 function ligarConta() {
   $('#botao-sair').addEventListener('click', async () => {
     await api.logout().catch(() => {});
-    window.location.href = 'index.html';
+    window.location.href = './';
   });
 
   const resetar = $('#botao-resetar');
@@ -911,12 +913,12 @@ function ligarConta() {
     const ok = await confirmar('Todas as contas, leituras e lembretes criados neste navegador serão apagados e os dados de exemplo voltarão ao estado inicial.', 'Restaurar');
     if (!ok) return;
     await api.resetarDemo();
-    window.location.href = 'index.html#cadastro';
+    window.location.href = './#cadastro';
   });
 
   // Outra aba saiu da conta ou mudou os dados → mantém esta aba em dia
   window.addEventListener('storage', (evento) => {
-    if (evento.key === 'hydrosmart_sessao' && !sessao.obter()) window.location.replace('index.html');
+    if (evento.key === 'hydrosmart_sessao' && !sessao.obter()) window.location.replace('./');
     if (evento.key === 'hydrosmart_db') carregarTudo().catch(tratarErro);
   });
 }
@@ -926,9 +928,10 @@ function ligarConta() {
 /* ==================================================================== */
 
 async function iniciar() {
+  iniciarTema();
   const atual = sessao.obter();
   if (!atual?.token) {
-    window.location.replace('index.html#cadastro');
+    window.location.replace('./#cadastro');
     return;
   }
   estado.usuario = atual.usuario;

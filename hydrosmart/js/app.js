@@ -6,6 +6,7 @@
  *   3. Abas "Criar conta" / "Entrar" acessíveis (setas do teclado)
  *   4. Validação e envio do cadastro e do login (api.js)
  *   5. Sugestão de meta pelo peso, mostrar/ocultar senha
+ *   6. Modo claro/escuro (tema.js)
  */
 
 import { api, sessao, ErroApi, CONTA_DEMO } from './api.js';
@@ -14,6 +15,7 @@ import {
   validarObjeto, sugerirMetaPorPeso,
 } from './validacao.js';
 import { formatarMl } from './utils.js';
+import { iniciarTema } from './tema.js';
 import {
   $, $$, prefereMenosMovimento, mostrarToast, definirErroCampo, aplicarErros,
   limparErros, mostrarErroFormulario, definirCarregando, animarNumero,
@@ -300,6 +302,7 @@ function tratarErroFormulario(formulario, erro) {
 
 function iniciar() {
   $('#ano-atual').textContent = new Date().getFullYear();
+  iniciarTema();
   iniciarMenu();
   atualizarAcoesDeSessao();
   iniciarRevelacao();
